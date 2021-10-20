@@ -1,36 +1,38 @@
+import React, { useState } from "react";
+
 import ExpenseItem from "./ExpenseItem.js";
 import ExpensesFilter from "./ExpensesFilter.js";
 import Card from "../UI/Card.js";
 import "./Expenses.css";
 
 function Expenses(props) {
-  const saveExpensesFilterYear = (enteredYear) => {
-    const currentYear = enteredYear;
-    console.log("hi from expense", currentYear);
+  const [enteredFilterYear, setNewYear] = useState("2022");
+
+  const saveExpensesFilterYear = (event) => {
+    console.log("h");
+    setNewYear(event.target.value);
   };
+
+  const filteredExpenses = props.dataArray.filter((expense) => {
+    console.log(expense);
+    console.log(expense.date.getFullYear().toString());
+    console.log(enteredFilterYear);
+    return expense.date.getFullYear().toString() === enteredFilterYear;
+  });
   return (
     <Card className="expenses">
-      <ExpensesFilter onChangeFilterYear={saveExpensesFilterYear} />
-      <ExpenseItem
-        title={props.dataArray[0].title}
-        amount={props.dataArray[0].amount}
-        date={props.dataArray[0].date}
+      <ExpensesFilter
+        currentYear={enteredFilterYear}
+        onChangeFilterYear={saveExpensesFilterYear}
       />
-      <ExpenseItem
-        title={props.dataArray[1].title}
-        amount={props.dataArray[1].amount}
-        date={props.dataArray[1].date}
-      />
-      <ExpenseItem
-        title={props.dataArray[2].title}
-        amount={props.dataArray[2].amount}
-        date={props.dataArray[2].date}
-      />
-      <ExpenseItem
-        title={props.dataArray[3].title}
-        amount={props.dataArray[3].amount}
-        date={props.dataArray[3].date}
-      />
+      {filteredExpenses.map((expense) => (
+        <ExpenseItem
+          key={expense.id}
+          title={expense.title}
+          amount={expense.amount}
+          date={expense.date}
+        />
+      ))}
     </Card>
   );
 }
