@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import ExpensesList from "./ExpensesList.js";
 import ExpensesFilter from "./ExpensesFilter.js";
 import Card from "../UI/Card.js";
+import ExpensesChart from "./ExpensesChart.js";
 import "./Expenses.css";
 
 function Expenses(props) {
   const [enteredFilterYear, setNewYear] = useState("2022");
 
-  const saveExpensesFilterYear = (event) => {
+  const saveExpensesFilterYearHandler = (event) => {
     setNewYear(event.target.value);
   };
 
@@ -20,8 +21,9 @@ function Expenses(props) {
     <Card className="expenses">
       <ExpensesFilter
         currentYear={enteredFilterYear}
-        onChangeFilterYear={saveExpensesFilterYear}
+        onChangeFilterYear={saveExpensesFilterYearHandler}
       />
+      <ExpensesChart expenses={filteredExpenses} />
       <ExpensesList listOfExpenses={filteredExpenses} />
     </Card>
   );
